@@ -1,0 +1,36 @@
+- name: delete couchdb index if it exists
+  uri:
+    url: http://{{ preferences_server_data_loader_couchdb_host_address }}/preferences
+    method: DELETE
+    status_code: 200,404 # succeeds if it either deletes the index or returns that it can't be deleted due to not existing
+  when: preferences_server_data_loader_clear_index
+
+- name: create the couchdb index
+  uri:
+    url: http://{{ preferences_server_data_loader_couchdb_host_address }}/preferences
+    method: PUT
+    status_code: 201
+  when: preferences_server_data_loader_clear_index
+
+- name: install Kanso for interacting with couchdb
+  npm:
+    name: kanso
+    state: present
+    global: yes
+
+- name: upload the modified test preferences files to couchdb
+  shell: kanso upload {{ item }} http://{{ preferences_server_data_loader_couchdb_host_address }}/preferences
+  with_fileglob: /tmp/prefData/*.json
+
+- name: remove kanso
+  npm:
+    name: kanso
+    state: absent
+    global: yes
+  when: preferences_server_data_loader_cleanup_after
+
+- name: remove temp directory
+  file:
+    path: /tmp/prefData
+    state: absent
+  when: preferences_server_data_loader_cleanup_after
