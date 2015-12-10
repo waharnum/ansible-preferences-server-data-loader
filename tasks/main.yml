@@ -3,7 +3,7 @@
 
 - include: configure.yml
   tags:
-    - deploy
+    - configure
 
 - include: deploy.yml
   tags:
