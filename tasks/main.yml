@@ -8,3 +8,7 @@
 - include: deploy.yml
   tags:
     - deploy
+
+- include: test.yml
+  tags:
+    - test

@@ -1,0 +1,13 @@
+- name: Test a user endpoint
+  uri:
+    url: "http://{{ preferences_server_data_loader_couchdb_host_address }}"
+    status_code: 200
+    follow_redirects: all
+    return_content: yes
+    timeout: 60
+  register: user
+
+- name: Fail if requested string is not found
+  fail:
+    msg: Application is not configured properly
+  when: "'registry.gpii.net' not in user.content"
