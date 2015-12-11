@@ -1,4 +1,4 @@
-Role Name
+GPII Preferences Server Data Loader
 =========
 
 Role for loading test data (or, maybe, other data) to a preference server data stores (CouchDB instance). Split out from ansible-preferences-server.
