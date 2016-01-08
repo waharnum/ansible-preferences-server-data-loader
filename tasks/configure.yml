@@ -32,6 +32,6 @@
 
 - name: template out modified review4 test data to the remote host
   template:
-    src: uploadedData.j2
+    src: uploadedDataReview4.j2
     dest: "{{ item[1] }}"
   with_indexed_items: "{{ preferences_server_tmp_pref_data_review4.stdout_lines }}"
