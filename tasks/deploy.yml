@@ -1,11 +1,11 @@
-- name: delete couchdb index if it exists
+- name: delete couchdb preferences index if it exists
   uri:
     url: http://{{ preferences_server_data_loader_couchdb_host_address }}/preferences
     method: DELETE
     status_code: 200,404 # succeeds if it either deletes the index or returns that it can't be deleted due to not existing
   when: preferences_server_data_loader_clear_index
 
-- name: create the couchdb index
+- name: create the couchdb preferences index
   uri:
     url: http://{{ preferences_server_data_loader_couchdb_host_address }}/preferences
     method: PUT
@@ -21,6 +21,26 @@
 - name: upload the modified test preferences files to couchdb
   shell: kanso upload {{ item }} http://{{ preferences_server_data_loader_couchdb_host_address }}/preferences
   with_fileglob: /tmp/prefData/*.json
+
+- name: delete couchdb auth index if it exists
+  uri:
+    url: http://{{ preferences_server_data_loader_couchdb_host_address }}/auth
+    method: DELETE
+    status_code: 200,404 # succeeds if it either deletes the index or returns that it can't be deleted due to not existing
+  when: preferences_server_data_loader_clear_index
+
+- name: create the couchdb auth index
+  uri:
+    url: http://{{ preferences_server_data_loader_couchdb_host_address }}/auth
+    method: PUT
+    status_code: 201
+  when: preferences_server_data_loader_clear_index
+
+- name: upload the needed auth files to couchdb
+  shell: kanso upload {{ item }} http://{{ preferences_server_data_loader_couchdb_host_address }}/auth
+  with_items:
+    - {{ nodejs_app_install_dir }}/testData/security/TestOAuth2DataStore.json
+    - {{ nodejs_app_install_dir }}/gpii/node_modules/gpii-oauth2/gpii-oauth2-datastore/dbViews/views.json
 
 - name: remove kanso
   npm:
