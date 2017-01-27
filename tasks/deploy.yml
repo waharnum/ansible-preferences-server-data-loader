@@ -30,11 +30,11 @@
     status_code: 201
   when: preferences_server_data_loader_clear_index
 
-- name: upload the needed auth files to couchdb
-  shell: "kanso upload {{ item }} http://{{ preferences_server_data_loader_couchdb_host_address }}/auth"
-  with_items:
-    -"{{ nodejs_app_install_dir }}/testData/security/TestOAuth2DataStore.json"
-    - "{{ nodejs_app_install_dir }}/gpii/node_modules/gpii-oauth2/gpii-oauth2-datastore/dbViews/views.json"
+- name: upload the test OAuth2 data store
+  shell: "kanso upload {{ nodejs_app_install_dir }}/testData/security/TestOAuth2DataStore.json http://{{ preferences_server_data_loader_couchdb_host_address }}/auth"
+
+- name: upload the auth views
+  shell: "kanso upload {{ nodejs_app_install_dir }}/gpii/node_modules/gpii-oauth2/gpii-oauth2-datastore/dbViews/views.json http://{{ preferences_server_data_loader_couchdb_host_address }}/auth"
 
 - name: remove temp directory
   file:
