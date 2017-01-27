@@ -1,3 +1,8 @@
+- name: create directory on remote host to hold modified data files
+  file:
+    dest: /tmp/prefData/
+    state: directory
+
 - name: copy test data to temporary directory (on control host) to use for templating
   synchronize:
     src: "{{ nodejs_app_install_dir }}/testData/preferences/"
@@ -11,11 +16,6 @@
   ignore_errors: true
   delegate_to: 127.0.0.1
   become: no
-
-- name: create directory on remote host to hold modified data files
-  file:
-    dest: /tmp/prefData/
-    state: directory
 
 - name: template out modified test data to the remote host
   template:
