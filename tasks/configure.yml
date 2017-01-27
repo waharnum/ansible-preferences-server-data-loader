@@ -2,6 +2,7 @@
   file:
     dest: /tmp/prefData/
     state: directory
+    mode: pull
 
 - name: copy test data to temporary directory (on control host) to use for templating
   synchronize:
