@@ -1,0 +1,5 @@
+- name: install Kanso for interacting with couchdb
+  npm:
+    name: kanso
+    state: present
+    global: yes
